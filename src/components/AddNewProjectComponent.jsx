@@ -16,7 +16,6 @@ export default function AddNewProjectComponent({ handleSubmitTask }) {
     }
 
     if (selectOption == null) {
-      console.log("selection state", selectOption);
       error.progress = "Progress is required!";
       isvalid = false;
     }
@@ -57,8 +56,6 @@ export default function AddNewProjectComponent({ handleSubmitTask }) {
   }
 
   function userClick() {
-    console.log("Before Return");
-    console.log("Error State", error);
     if (!validateForm()) return;
     console.log("After Return");
     const newTask = {
