@@ -9,24 +9,7 @@ import SidebarComponent from "./components/SidebarComponent";
 import TopNavbarComponent from "./components/TopNavbarComponent";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      date: new Date().toISOString().split("T")[0],
-      title: "Web",
-      description:
-        "Become a Full-Stack Web Developer with just ONE course. HTML, CSS, Javascript, Node, React, PostgreSQL, Web3 and DApps",
-      progress: "0%",
-    },
-    {
-      id: 2,
-      date: new Date().toISOString().split("T")[0],
-      title: "IOS",
-      description:
-        "From Beginner to iOS App Developer with Just One Course! Fully Updated with a Comprehensive Module Dedicated to SwiftUI!",
-      progress: "100%",
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState(tasks);
 
   function handleSubmitTask(value) {
@@ -37,7 +20,7 @@ function App() {
     };
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
-    filterTasks(updatedTasks, ""); // Reset filter after adding new task
+    filterTasks(updatedTasks, "");
   }
 
   function handleSearch(query) {
@@ -59,10 +42,10 @@ function App() {
   }
 
   return (
-    <main>
+    <main className="overflow-hidden h-screen bg-neutral-100">
       <section className="w-full flex gap-5">
         <SidebarComponent />
-        <div className="flex flex-col gap-5 w-full">
+        <div className="flex flex-col gap-5 w-full mt-1">
           <TopNavbarComponent onSearch={handleSearch} />
           <div className="flex flex-row gap-5">
             <div className="flex flex-col gap-y-5 flex-1">
@@ -75,7 +58,7 @@ function App() {
                 <CardComponent tasks={filteredTasks} />
               </div>
             </div>
-            <div>
+            <div className="w-[23%]">
               <LearningMaterialsComponent />
             </div>
           </div>

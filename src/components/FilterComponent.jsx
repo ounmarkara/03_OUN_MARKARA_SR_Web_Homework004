@@ -13,7 +13,7 @@ export default function FilterComponent({ onSortChange }) {
 
   return (
     <form className="mt-4 mx-4 flex justify-between" onSubmit={handleSubmit}>
-      <div className="relative w-full">
+      <div className="relative w-full mt-5">
         <select
           id="filterLearningMaterials"
           name="filterLearningMaterials"

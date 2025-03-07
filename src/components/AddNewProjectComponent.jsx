@@ -3,9 +3,40 @@ import React, { useState } from "react";
 
 export default function AddNewProjectComponent({ handleSubmitTask }) {
   const [task, setTasks] = useState({});
-  const [selectOption, setSelectOption] = useState("");
+  const [selectOption, setSelectOption] = useState(null);
+  const [error, setError] = useState({});
 
-  // Tittle and duedate
+  function validateForm() {
+    let error = {};
+    let isvalid = true;
+
+    if (!task.title || task.title.trim().lenght < 2) {
+      error.title = "tittle must be required";
+      isvalid = false;
+    }
+
+    if (selectOption == null) {
+      console.log("selection state", selectOption);
+      error.progress = "Progress is required!";
+      isvalid = false;
+    }
+
+    if (!task.date) {
+      error.date = "Due date is required!";
+      isvalid = false;
+    } else {
+      const today = new Date().setHours(0, 0, 0, 0);
+      const selectedDate = new Date(task.date).setHours(0, 0, 0, 0);
+
+      if (selectedDate < today) {
+        error.date = "Due date can not be in the past";
+        isvalid = false;
+      }
+    }
+    setError(error);
+    return isvalid;
+  }
+
   function userInput(e) {
     const { id, value } = e.target;
 
@@ -21,10 +52,15 @@ export default function AddNewProjectComponent({ handleSubmitTask }) {
   // postgress
   function userSelect(e) {
     const { value } = e.target;
+    console.log("default value bos select", value);
     setSelectOption(value);
   }
 
   function userClick() {
+    console.log("Before Return");
+    console.log("Error State", error);
+    if (!validateForm()) return;
+    console.log("After Return");
     const newTask = {
       ...task,
       progress: selectOption,
@@ -33,14 +69,6 @@ export default function AddNewProjectComponent({ handleSubmitTask }) {
     handleSubmitTask(newTask);
   }
 
-  function userClick() {
-    const newTask = {
-      ...task,
-      progress: selectOption,
-      id: Date.now(),
-    };
-    handleSubmitTask(newTask);
-  }
   return (
     <div>
       <button
@@ -103,6 +131,7 @@ export default function AddNewProjectComponent({ handleSubmitTask }) {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Project Name"
                   />
+                  <p className="text-red-500">{error.title}</p>
                 </div>
 
                 <div className="col-span-2">
@@ -119,6 +148,7 @@ export default function AddNewProjectComponent({ handleSubmitTask }) {
                     id="dueDate"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   />
+                  <p className="text-red-500">{error.date}</p>
                 </div>
 
                 <div className="col-span-2">
@@ -134,12 +164,13 @@ export default function AddNewProjectComponent({ handleSubmitTask }) {
                     id="progress"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
-                    <option defaultValue="">Select Progress</option>
+                    <option>Select Progress</option>
                     <option value="100">100</option>
                     <option value="75">75</option>
                     <option value="50">50</option>
                     <option value="25">25</option>
                   </select>
+                  <p className="text-red-500">{error.progress}</p>
                 </div>
                 <div className="col-span-2">
                   <label

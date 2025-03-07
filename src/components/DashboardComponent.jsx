@@ -8,7 +8,7 @@ export default function DashboardComponent() {
 
       {/* display summary on each card */}
 
-      <div className="flex gap-5">
+      <div className="flex gap-1 justify-between">
         {dashboard.map((item) => (
           <div
             key={item.id}

@@ -38,7 +38,7 @@ export default function TopNavbarComponent({ onSearch }) {
         <div className="bg-red-600 w-2.5 h-2.5 rounded-full absolute top-2 right-3"></div>
       </div>
 
-      <div className="h-16 rounded-xl w-2/12 bg-white py-2.5 px-3 flex gap-3 items-start">
+      <div className="h-16 rounded-xl w-2/12 bg-white py-2.5 px-3 flex gap-3 items-start mt-2">
         <img
           src="https://i.pinimg.com/736x/39/2a/50/392a5042102c7d7e4ed87527a2d7e74a.jpg"
           alt="Profile"

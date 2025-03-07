@@ -2,13 +2,14 @@ import { EllipsisVertical } from "lucide-react";
 import React from "react";
 
 export default function CardComponent({ tasks }) {
-  // Function to get color based on progress
   function getProgressColor(progress) {
     if (progress < 25) return "text-red-500";
     if (progress < 50) return "text-yellow-500";
     if (progress < 75) return "text-blue-500";
     return "text-green-500";
   }
+
+  // Function to format the date
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -33,12 +34,43 @@ export default function CardComponent({ tasks }) {
     return "bg-green-500";
   }
 
+  // Function to format days left
+
+  function formatDaysLeft(dueDate) {
+    const today = new Date();
+    const due = new Date(dueDate);
+
+    // Check if the due date is valid
+
+    if (isNaN(due.getTime())) {
+      return "Invalid date";
+    }
+
+    const timeDifference = due - today;
+    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (daysLeft < 0) {
+      return "Deadline passed";
+    } else if (daysLeft === 0) {
+      return "Due today";
+    } else if (daysLeft < 7) {
+      return `${daysLeft} day${daysLeft > 1 ? "s" : ""} left`;
+    } else if (daysLeft < 30) {
+      const weeksLeft = Math.floor(daysLeft / 7);
+      return `${weeksLeft} week${weeksLeft > 1 ? "s" : ""} left`;
+    } else {
+      const monthsLeft = Math.floor(daysLeft / 30);
+      return `${monthsLeft} month${monthsLeft > 1 ? "s" : ""} left`;
+    }
+  }
+
   return (
     <>
       {tasks.map((task) => {
         const progressBarColor = getProgressBarColor(Number(task.progress));
         const progressTextColor = getProgressColor(Number(task.progress));
         const formattedDate = formatDate(task.date);
+        const daysLeftText = formatDaysLeft(task.date);
 
         return (
           <div
@@ -47,6 +79,7 @@ export default function CardComponent({ tasks }) {
           >
             <div className="flex justify-between mb-5">
               {/* date */}
+
               <p className={`${progressTextColor} font-medium`}>
                 {formattedDate === "Invalid date" ? "No date" : formattedDate}
               </p>
@@ -61,6 +94,7 @@ export default function CardComponent({ tasks }) {
             </p>
 
             {/* progress bar */}
+
             <div className="w-full flex justify-between font-medium mb-1">
               <p>Progress</p>
               <p>{task.progress}%</p>
@@ -73,9 +107,10 @@ export default function CardComponent({ tasks }) {
             </div>
 
             {/* deadline */}
+
             <div className="flex justify-end">
               <p className="font-medium bg-light-gray py-1.5 px-4 rounded-lg max-w-28 text-center">
-                1 day left
+                {daysLeftText}
               </p>
             </div>
           </div>
